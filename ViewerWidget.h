@@ -30,7 +30,7 @@ public:
 	void setFreeDrawActivated(bool state) { freeDrawActivated = state; }
 	bool getFreeDrawActivated() { return freeDrawActivated; }
 	void usecka_DDA(QPointF A, QPointF B, QColor color);
-	void kresliHedron(QList<QPointF> naVykreslenie);
+	void kresliHedron(QList<QPointF> naVykreslenie, QList<int> nevykresluj);
 
 	//Data functions
 	QRgb* getData() { return data; }

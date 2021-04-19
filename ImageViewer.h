@@ -52,6 +52,7 @@ private:
 	Hedron octa;
 	premietanie kamera;
 	QList<QPointF> naVykreslenie;
+	QList<int> nevykresluj;
 	void prepocitajSuradnice();
 	void suradniceRovnobezne();
 	void suradniceStredove();

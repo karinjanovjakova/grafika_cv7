@@ -733,16 +733,17 @@ void ImageViewer::prepocitajSuradnice() {
 		suradniceRovnobezne();
 	else if (kamera.getTyp() == 1)
 		suradniceStredove();
-	getCurrentViewerWidget()->kresliHedron(naVykreslenie);
+	getCurrentViewerWidget()->kresliHedron(naVykreslenie, nevykresluj);
 }
 
 void ImageViewer::suradniceRovnobezne() {
 	qDebug() << "snaha rovnobezne";
 	naVykreslenie.clear();
+	nevykresluj.clear();
 	double a = kamera.getnx(), b = kamera.getny(), c = kamera.getnz();
 	double ux = kamera.getux(), uy = kamera.getuy(), uz = kamera.getuz();
 	double vx = kamera.getvx(), vy = kamera.getvy(), vz = kamera.getvz();
-	double stareX, stareY, stareZ, x, z, y, xx, yy;
+	double stareX, stareY, stareZ, x, z, y, xx, yy, dist;
 	int zoom = ui->zoom->value();
 	QPointF bod;
 	for (int i = 0; i < octa.getStenysize(); i++){
@@ -750,6 +751,11 @@ void ImageViewer::suradniceRovnobezne() {
 		stareX = octa.getStena(i)->getEdge()->getVertexO()->getX();
 		stareY = octa.getStena(i)->getEdge()->getVertexO()->getY();
 		stareZ = octa.getStena(i)->getEdge()->getVertexO()->getZ();
+
+		dist = sqrt((stareX * zoom - a * zoom) * (stareX - a * zoom) + (stareY * zoom - b * zoom) * (stareY * zoom - b * zoom) + (stareZ * zoom - c * zoom) * (stareZ * zoom - c * zoom));
+		if (dist<ui->spinNear->value() || dist>ui->spinFar->value()) {
+			nevykresluj.append(i);	//aby neskor vynechal celu stenu
+		}
 
 		x = stareX - a * ((a * stareX + b * stareY + c * stareZ) / (a * a + b * b + c * c));
 		y = stareY - b * ((a * stareX + b * stareY + c * stareZ) / (a * a + b * b + c * c));
@@ -766,6 +772,11 @@ void ImageViewer::suradniceRovnobezne() {
 		stareY = octa.getStena(i)->getEdge()->getHrana_next()->getVertexO()->getY();
 		stareZ = octa.getStena(i)->getEdge()->getHrana_next()->getVertexO()->getZ();
 
+		dist = sqrt((stareX * zoom - a * zoom) * (stareX - a * zoom) + (stareY * zoom - b * zoom) * (stareY * zoom - b * zoom) + (stareZ * zoom - c * zoom) * (stareZ * zoom - c * zoom));
+		if (dist<ui->spinNear->value() || dist>ui->spinFar->value()) {
+			nevykresluj.append(i);	
+		}
+
 		x = stareX - a * ((a * stareX + b * stareY + c * stareZ) / (a * a + b * b + c * c));
 		y = stareY - b * ((a * stareX + b * stareY + c * stareZ) / (a * a + b * b + c * c));
 		z = stareZ - c * ((a * stareX + b * stareY + c * stareZ) / (a * a + b * b + c * c));
@@ -780,6 +791,11 @@ void ImageViewer::suradniceRovnobezne() {
 		stareX = octa.getStena(i)->getEdge()->getHrana_next()->getHrana_next()->getVertexO()->getX();
 		stareY = octa.getStena(i)->getEdge()->getHrana_next()->getHrana_next()->getVertexO()->getY();
 		stareZ = octa.getStena(i)->getEdge()->getHrana_next()->getHrana_next()->getVertexO()->getZ();
+
+		dist = sqrt((stareX * zoom - a * zoom) * (stareX - a * zoom) + (stareY * zoom - b * zoom) * (stareY * zoom - b * zoom) + (stareZ * zoom - c * zoom) * (stareZ * zoom - c * zoom));
+		if (dist<ui->spinNear->value() || dist>ui->spinFar->value()) {
+			nevykresluj.append(i);
+		}
 
 		x = stareX - a * ((a * stareX + b * stareY + c * stareZ) / (a * a + b * b + c * c));
 		y = stareY - b * ((a * stareX + b * stareY + c * stareZ) / (a * a + b * b + c * c));
@@ -796,8 +812,9 @@ void ImageViewer::suradniceRovnobezne() {
 void ImageViewer::suradniceStredove() {
 	qDebug() << "snaha stredove";
 	naVykreslenie.clear();
+	nevykresluj.clear();
 	double a = kamera.getnx(), b = kamera.getny(), c = kamera.getnz();
-	double stareX, stareY, stareZ, x, z, y, xx, yy, Sx, Sy, Sz, t;
+	double stareX, stareY, stareZ, x, z, y, xx, yy, Sx, Sy, Sz, t, dist;
 	double ux = kamera.getux(), uy = kamera.getuy(), uz = kamera.getuz();
 	double vx = kamera.getvx(), vy = kamera.getvy(), vz = kamera.getvz();
 	int zoom = ui->zoom->value();
@@ -811,6 +828,11 @@ void ImageViewer::suradniceStredove() {
 		stareX = octa.getStena(i)->getEdge()->getVertexO()->getX();
 		stareY = octa.getStena(i)->getEdge()->getVertexO()->getY();
 		stareZ = octa.getStena(i)->getEdge()->getVertexO()->getZ();
+
+		dist = sqrt((stareX * zoom - a * zoom) * (stareX - a * zoom) + (stareY * zoom - b * zoom) * (stareY * zoom - b * zoom) + (stareZ * zoom - c * zoom) * (stareZ * zoom - c * zoom));
+		if (dist<ui->spinNear->value() || dist>ui->spinFar->value()) {
+			nevykresluj.append(i);
+		}
 
 		t = ((a * stareX + b * stareY + c * stareZ) / (a * (Sx - stareX) + b * (Sy - stareY) + c * (Sz - stareZ)));
 		x = stareX + (stareX - Sx) * t;
@@ -828,6 +850,11 @@ void ImageViewer::suradniceStredove() {
 		stareY = octa.getStena(i)->getEdge()->getHrana_next()->getVertexO()->getY();
 		stareZ = octa.getStena(i)->getEdge()->getHrana_next()->getVertexO()->getZ();
 
+		dist = sqrt((stareX * zoom - a * zoom) * (stareX - a * zoom) + (stareY * zoom - b * zoom) * (stareY * zoom - b * zoom) + (stareZ * zoom - c * zoom) * (stareZ * zoom - c * zoom));
+		if (dist<ui->spinNear->value() || dist>ui->spinFar->value()) {
+			nevykresluj.append(i);
+		}
+
 		t = ((a * stareX + b * stareY + c * stareZ) / (a * (Sx - stareX) + b * (Sy - stareY) + c * (Sz - stareZ)));
 		x = stareX + (stareX - Sx) * t;
 		y = stareY + (stareY - Sy) * t;
@@ -843,6 +870,11 @@ void ImageViewer::suradniceStredove() {
 		stareX = octa.getStena(i)->getEdge()->getHrana_next()->getHrana_next()->getVertexO()->getX();
 		stareY = octa.getStena(i)->getEdge()->getHrana_next()->getHrana_next()->getVertexO()->getY();
 		stareZ = octa.getStena(i)->getEdge()->getHrana_next()->getHrana_next()->getVertexO()->getZ();
+
+		dist = sqrt((stareX * zoom - a * zoom) * (stareX - a * zoom) + (stareY * zoom - b * zoom) * (stareY * zoom - b * zoom) + (stareZ * zoom - c * zoom) * (stareZ * zoom - c * zoom));
+		if (dist<ui->spinNear->value() || dist>ui->spinFar->value()) {
+			nevykresluj.append(i);
+		}
 
 		t = ((a * stareX + b * stareY + c * stareZ) / (a * (Sx - stareX) + b * (Sy - stareY) + c * (Sz - stareZ)));
 		x = stareX + (stareX - Sx) * t;

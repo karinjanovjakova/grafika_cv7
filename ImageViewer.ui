@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>780</height>
+    <width>1500</width>
+    <height>1201</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -167,7 +167,17 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="spinFar"/>
+        <widget class="QSpinBox" name="spinFar">
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>500</number>
+         </property>
+         <property name="stepType">
+          <enum>QAbstractSpinBox::DefaultStepType</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_4">
@@ -177,7 +187,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="spinNear"/>
+        <widget class="QSpinBox" name="spinNear">
+         <property name="maximum">
+          <number>500</number>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -280,7 +294,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1200</width>
+     <width>1500</width>
      <height>22</height>
     </rect>
    </property>

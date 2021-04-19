@@ -168,65 +168,70 @@ void ViewerWidget::usecka_DDA(QPointF A, QPointF B, QColor color) {
 	update();
 }
 
-void ViewerWidget::kresliHedron(QList<QPointF> naVykreslenie) {
+void ViewerWidget::kresliHedron(QList<QPointF> naVykreslenie, QList<int> nevykresluj) {
 	img->fill(Qt::white);
 	update();
 	//qDebug() << naVykreslenie;
-	int i;
+	int i, k;
 	int w = img->width();
 	int h = img->height();
+	bool nekresli = false;
 	QList<QPointF> W, V;
 	for (i = 0; i < naVykreslenie.size(); i += 3) {
-		//qDebug() << i / 3;
-		//qDebug() << naVykreslenie.size();
-		V.clear();
-		V.append(naVykreslenie[i]);
-		V.append(naVykreslenie[i + 1]);
-		V.append(naVykreslenie[i + 2]);
-		//qDebug() << V;
-		QPointF S, P, A, B;
-		int Xmin[4] = { 1, 1, -w + 1, -h + 1 };
-		int xmin = 0, j = 0, i = 0;
-		for (j = 0; j < 4; j++) {
-			xmin = Xmin[j];
-			if (V.size() > 0)
-				S = V[V.size() - 1];
-			for (i = 0; i < V.size(); i++) {
-				if (V[i].x() >= xmin) {
-					if (S.x() >= xmin) {
-						W.push_back(V[i]);
+		nekresli = false;
+		for (k = 0; k < nevykresluj.size(); k++) {
+			if (i == k) {
+				nekresli = true;
+			}
+		}
+		if (!nekresli) {
+			V.clear();
+			V.append(naVykreslenie[i]);
+			V.append(naVykreslenie[i + 1]);
+			V.append(naVykreslenie[i + 2]);
+			QPointF S, P, A, B;
+			int Xmin[4] = { 1, 1, -w + 1, -h + 1 };
+			int xmin = 0, j = 0, i = 0;
+			for (j = 0; j < 4; j++) {
+				xmin = Xmin[j];
+				if (V.size() > 0)
+					S = V[V.size() - 1];
+				for (i = 0; i < V.size(); i++) {
+					if (V[i].x() >= xmin) {
+						if (S.x() >= xmin) {
+							W.push_back(V[i]);
+						}
+						else {
+							P.setX(xmin);
+							P.setY(S.y() + (xmin - S.x()) * (V[i].y() - S.y()) / (V[i].x() - S.x()));
+							W.push_back(P);
+							W.push_back(V[i]);
+						}
 					}
 					else {
-						P.setX(xmin);
-						P.setY(S.y() + (xmin - S.x()) * (V[i].y() - S.y()) / (V[i].x() - S.x()));
-						W.push_back(P);
-						W.push_back(V[i]);
+						if (S.x() >= xmin) {
+							P.setX(xmin);
+							P.setY(S.y() + (xmin - S.x()) * (V[i].y() - S.y()) / (V[i].x() - S.x()));
+							W.push_back(P);
+						}
 					}
+					S = V[i];
 				}
-				else {
-					if (S.x() >= xmin) {
-						P.setX(xmin);
-						P.setY(S.y() + (xmin - S.x()) * (V[i].y() - S.y()) / (V[i].x() - S.x()));
-						W.push_back(P);
-					}
+				V.clear();
+				for (i = 0; i < W.size(); i++) {
+					P.setX(W[i].y());
+					P.setY(-W[i].x());
+					V.push_back(P);
 				}
-				S = V[i];
+				W.clear();
 			}
-			//qDebug() << "W je: " << W;
-			V.clear();
-			for (i = 0; i < W.size(); i++) {
-				P.setX(W[i].y());
-				P.setY(-W[i].x());
-				V.push_back(P);
+			for (i = 0; i < V.size(); i++) {
+				A.setX(V[i].x());
+				A.setY(V[i].y());
+				B.setX(V[(i + 1) % (V.size())].x());
+				B.setY(V[(i + 1) % (V.size())].y());
+				usecka_DDA(A, B, Qt::black);
 			}
-			W.clear();
-		}
-		for (i = 0; i < V.size(); i++) {
-			A.setX(V[i].x());
-			A.setY(V[i].y());
-			B.setX(V[(i + 1) % (V.size())].x());
-			B.setY(V[(i + 1) % (V.size())].y());
-			usecka_DDA(A, B, Qt::black);
 		}
 	}
 	update();

@@ -171,7 +171,6 @@ void ViewerWidget::usecka_DDA(QPointF A, QPointF B, QColor color) {
 void ViewerWidget::kresliHedron(QList<QPointF> naVykreslenie, QList<int> nevykresluj) {
 	img->fill(Qt::white);
 	update();
-	//qDebug() << naVykreslenie;
 	int i, k;
 	int w = img->width();
 	int h = img->height();
@@ -180,7 +179,7 @@ void ViewerWidget::kresliHedron(QList<QPointF> naVykreslenie, QList<int> nevykre
 	for (i = 0; i < naVykreslenie.size(); i += 3) {
 		nekresli = false;
 		for (k = 0; k < nevykresluj.size(); k++) {
-			if (i == k) {
+			if (i/3 == nevykresluj[k]) {
 				nekresli = true;
 			}
 		}

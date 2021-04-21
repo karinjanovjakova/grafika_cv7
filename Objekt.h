@@ -114,7 +114,8 @@ public:
 
 
 class premietanie {
-	int zenit = 0, azimut = 0, typ = 0, Far = 0, Near = 0;
+	double zenit = 0, azimut = 0;
+	int typ = 0, Far = 0, Near = 0;
 
 	double nx, ny, nz;
 	double ux, uy, uz;
@@ -122,8 +123,8 @@ class premietanie {
 
 public:
 	premietanie() {};
-	void setZenit(int zen) { zenit = zen; };
-	void setAzimut(int azi) { azimut = azi; };
+	void setZenit(float zen) { zenit = zen; };
+	void setAzimut(float azi) { azimut = azi; };
 	void setTyp(int a) { typ = a; };
 	void setFar(int a) { Far = a; };
 	void setNear(int a) { Near = a; };

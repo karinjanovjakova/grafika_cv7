@@ -724,8 +724,8 @@ void ImageViewer::on_exp_clicked() {
 }
 
 void ImageViewer::prepocitajSuradnice() {
-	kamera.setAzimut(ui->azimut->value());
-	kamera.setZenit(ui->zenit->value());
+	kamera.setAzimut(ui->azimut->value() * M_PI / 180.0);
+	kamera.setZenit(ui->zenit->value() * M_PI / 180.0);
 	kamera.setN();
 	kamera.setU();
 	kamera.setV();
@@ -894,12 +894,10 @@ void ImageViewer::on_zoom_valueChanged(int i) {
 }
 
 void ImageViewer::on_azimut_valueChanged(int i) {
-	kamera.setAzimut(i);
 	prepocitajSuradnice();
 }
 
 void ImageViewer::on_zenit_valueChanged(int i) {
-	kamera.setZenit(i);
 	prepocitajSuradnice();
 }
 

@@ -229,7 +229,8 @@ void ViewerWidget::kresliHedron(QList<QPointF> naVykreslenie, QList<int> nevykre
 				A.setY(V[i].y());
 				B.setX(V[(i + 1) % (V.size())].x());
 				B.setY(V[(i + 1) % (V.size())].y());
-				usecka_DDA(A, B, Qt::black);
+				if (!isnan(A.x()) && !isnan(B.x()) && !isnan(A.y()) && !isnan(B.y()))
+					usecka_DDA(A, B, Qt::black);
 			}
 		}
 	}

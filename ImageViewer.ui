@@ -95,7 +95,10 @@
        <item>
         <widget class="QSpinBox" name="spinBox_3">
          <property name="minimum">
-          <number>1</number>
+          <number>2</number>
+         </property>
+         <property name="maximum">
+          <number>500</number>
          </property>
         </widget>
        </item>
@@ -152,7 +155,7 @@
        <item>
         <widget class="QSlider" name="zenit">
          <property name="maximum">
-          <number>360</number>
+          <number>361</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>

@@ -823,6 +823,7 @@ void ImageViewer::suradniceStredove() {
 	Sx = s * a;
 	Sy = s * b;
 	Sz = s * c;
+	qDebug() << kamera.getZenit();
 	for (int i = 0; i < octa.getStenysize(); i++) {
 		//bod1
 		stareX = octa.getStena(i)->getEdge()->getVertexO()->getX();
@@ -833,7 +834,7 @@ void ImageViewer::suradniceStredove() {
 		if (dist<ui->spinNear->value() || dist>ui->spinFar->value()) {
 			nevykresluj.append(i);
 		}
-
+		
 		t = ((a * stareX + b * stareY + c * stareZ) / (a * (Sx - stareX) + b * (Sy - stareY) + c * (Sz - stareZ)));
 		x = stareX + (stareX - Sx) * t;
 		y = stareY + (stareY - Sy) * t;

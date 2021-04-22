@@ -144,8 +144,8 @@ public:
 		vz = nx * uy - ny * ux;
 	}
 
-	int getAzimut() { return azimut; };
-	int getZenit() { return zenit; };
+	float getAzimut() { return azimut; };
+	float getZenit() { return zenit; };
 	int getTyp() { return typ; };
 	int getFar() { return Far; };
 	int getNear() { return Near; };
